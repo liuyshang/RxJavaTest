@@ -1,0 +1,74 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/rl_bar"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/ib_back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/selector_ic_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="手机号归属地查询"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <View
+            style="@style/BorderLine"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_bar"
+        android:layout_marginTop="15dp">
+
+        <EditText
+            android:id="@+id/et"
+            android:layout_width="220dp"
+            android:layout_height="88dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:hint="多个号码用英文符号 , 隔开"
+            android:lineSpacingMultiplier="1.3"
+            android:lines="2"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/bt_get"
+            android:layout_width="220dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/et"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/selector_btn_01"
+            android:text="查询手机号归属地" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl" />
+
+</RelativeLayout>
