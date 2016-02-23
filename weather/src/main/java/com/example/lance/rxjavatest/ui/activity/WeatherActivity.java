@@ -28,9 +28,9 @@ import java.util.List;
  * time: 2016/1/23 16:18
  * e-mail: lance.cao@anarry.com
  */
-public class WeatherActivity extends FinalActivity implements WeatherView, View.OnClickListener{
+public class WeatherActivity extends FinalActivity implements WeatherView{
 
-    @ViewInject(id = R.id.ib_back)
+    @ViewInject(id = R.id.ib_back, click = "onClick")
     private ImageView ibBack;
     @ViewInject(id = R.id.et)
     private EditText et;
@@ -64,7 +64,6 @@ public class WeatherActivity extends FinalActivity implements WeatherView, View.
         });
     }
 
-    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.bt_get:

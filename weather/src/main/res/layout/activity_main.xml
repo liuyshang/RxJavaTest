@@ -26,6 +26,11 @@
                 style="@style/ButtonMain"
                 android:text="手机号归属地查询" />
 
+            <Button
+                android:id="@+id/bt_id_card"
+                style="@style/ButtonMain"
+                android:text="身份证查询" />
+
         </LinearLayout>
 
     </ScrollView>

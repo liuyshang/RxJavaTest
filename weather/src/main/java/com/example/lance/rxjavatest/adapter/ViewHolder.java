@@ -234,5 +234,4 @@ public class ViewHolder {
         view.setOnLongClickListener(listener);
         return this;
     }
-
 }

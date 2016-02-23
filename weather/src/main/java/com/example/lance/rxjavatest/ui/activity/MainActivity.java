@@ -22,6 +22,8 @@ public class MainActivity extends FinalActivity{
     private Button btWeather;
     @ViewInject(id = R.id.bt_mobile_attribution, click = "onClick")
     private Button btMobile;
+    @ViewInject(id = R.id.bt_id_card, click = "onClick")
+    private Button btIDCard;
 
     private Context mContext;
 
@@ -32,6 +34,9 @@ public class MainActivity extends FinalActivity{
                 break;
             case R.id.bt_mobile_attribution:
                 startActivity(new Intent(mContext,MobileAttributionActivity.class));
+                break;
+            case R.id.bt_id_card:
+                startActivity(new Intent(mContext,IDCardInquiryActivity.class));
                 break;
             default:
                 break;

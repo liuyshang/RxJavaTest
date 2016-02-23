@@ -31,13 +31,6 @@ public class WeatherPresenterImpl implements OnCompleteListener {
         weatherModel.loadWeather(str, this);
     }
 
-    //model调用
-//    @Override
-//    public void onSuccess(WeatherInfo weatherInfo) {
-//        weatherView.hideLoading();
-//        weatherView.showWeatherInfo(weatherInfo);
-//    }
-
     @Override
     public <T> void onSuccess(T t) {
         weatherView.hideLoading();
