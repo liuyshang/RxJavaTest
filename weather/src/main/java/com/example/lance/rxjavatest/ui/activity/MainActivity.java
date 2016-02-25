@@ -24,6 +24,8 @@ public class MainActivity extends FinalActivity{
     private Button btMobile;
     @ViewInject(id = R.id.bt_id_card, click = "onClick")
     private Button btIDCard;
+    @ViewInject(id = R.id.bt_ip_address, click = "onClick")
+    private Button btIPAdress;
 
     private Context mContext;
 
@@ -37,6 +39,9 @@ public class MainActivity extends FinalActivity{
                 break;
             case R.id.bt_id_card:
                 startActivity(new Intent(mContext,IDCardInquiryActivity.class));
+                break;
+            case R.id.bt_ip_address:
+                startActivity(new Intent(mContext,IPAddressActivity.class));
                 break;
             default:
                 break;
