@@ -43,12 +43,15 @@ public class WeatherFragment extends Fragment implements WeatherView{
     private WeatherPresenterImpl weatherPresenter;
     private Context mContext;
     private Dialog mDialog;
+    private View view;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.i(">>>", "WeatherFragment onCreateView");
-        View view = inflater.inflate(R.layout.fragment_detail,container,false);
+        if (view == null) {
+            view = inflater.inflate(R.layout.fragment_detail, null);
+        }
         FinalActivity.initInjectedView(this,view);
         mContext = getActivity();
         weatherPresenter = new WeatherPresenterImpl(this);
@@ -137,5 +140,8 @@ public class WeatherFragment extends Fragment implements WeatherView{
     public void onDestroyView() {
         Log.i(">>>", "WeatherFragment onDestroyView");
         super.onDestroyView();
+        if (null != view) {
+            ((ViewGroup) view.getParent()).removeView(view);
+        }
     }
 }

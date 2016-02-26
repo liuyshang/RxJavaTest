@@ -105,6 +105,7 @@ public class DetialActivity extends FragmentActivity implements View.OnClickList
         mAdapter = new TabViewPagerAdapter(getSupportFragmentManager(), mContext, mListTitle, mListFragment);
         viewPager.setAdapter(mAdapter);
         viewPager.setCurrentItem(Integer.parseInt(type));
+        //是否填充满屏幕的宽度
         slidingTab.setDistributeEvenly(true);
         slidingTab.setViewPager(viewPager);
         slidingTab.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {

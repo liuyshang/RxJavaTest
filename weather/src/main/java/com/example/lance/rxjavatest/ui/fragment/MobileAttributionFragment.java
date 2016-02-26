@@ -3,6 +3,8 @@ package com.example.lance.rxjavatest.ui.fragment;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,9 +36,9 @@ import java.util.List;
  * time: 2016/1/28 17:30
  * e-mail: lance.cao@anarry.com
  */
-public class MobileAttributionFragment extends Fragment implements MobileAttributionView{
+public class MobileAttributionFragment extends Fragment implements MobileAttributionView {
 
-    @ViewInject(id = R.id.et)
+    @ViewInject(id = R.id.et, click = "onClick")
     private EditText et;
     @ViewInject(id = R.id.bt_get, click = "onClick")
     private Button btGet;
@@ -48,12 +50,16 @@ public class MobileAttributionFragment extends Fragment implements MobileAttribu
     private Context mContext;
     private Dialog mDialog;
     private MobileAttributionPresenterImpl mobileImpl;
+    private View view;
 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_get:
                 et.clearFocus();
                 mobileImpl.onMobile(et.getText().toString().trim());
+                break;
+            case R.id.et:
+                et.setText("");
                 break;
             default:
                 break;
@@ -64,15 +70,18 @@ public class MobileAttributionFragment extends Fragment implements MobileAttribu
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.i(">>>", "MobileAttributionFragment onCreateView");
+        if (view == null) {
 //        View view = inflater.inflate(R.layout.fragment_mobile_attribution,container,false);
-        View view = inflater.inflate(R.layout.fragment_detail,null);
-        FinalActivity.initInjectedView(this,view);
+            view = inflater.inflate(R.layout.fragment_detail, null);
+        }
+        FinalActivity.initInjectedView(this, view);
         mContext = getActivity();
         mDialog = new ProgressDialog(mContext);
         mobileImpl = new MobileAttributionPresenterImpl(this);
         listView.setVisibility(View.VISIBLE);
         tvInfo.setVisibility(View.GONE);
         et.setHint("请输入手机号");
+
         return view;
     }
 
@@ -100,7 +109,7 @@ public class MobileAttributionFragment extends Fragment implements MobileAttribu
     @Override
     public void showMobileInfo(List<MobileInfo> list) {
 
-        listView.setAdapter(new CommomAdapter<MobileInfo>(mContext,list,R.layout.item_mobile_attribution) {
+        listView.setAdapter(new CommomAdapter<MobileInfo>(mContext, list, R.layout.item_mobile_attribution) {
             @Override
             protected void convert(ViewHolder holder, MobileInfo mobileInfo) {
                 StringBuilder builder = new StringBuilder();
@@ -109,7 +118,7 @@ public class MobileAttributionFragment extends Fragment implements MobileAttribu
                 builder.append("省份： " + mobileInfo.getProvince() + "\n");
                 builder.append("城市： " + mobileInfo.getCity() + "\n");
                 builder.append("地区号： " + mobileInfo.getAreaCode() + "\n");
-                builder.append("邮编： " + mobileInfo.getPostCode( )+ "\n");
+                builder.append("邮编： " + mobileInfo.getPostCode() + "\n");
 
                 holder.setText(R.id.tv_info, builder.toString());
                 holder.setOnClickListener(R.id.tv_info, new View.OnClickListener() {
@@ -132,5 +141,8 @@ public class MobileAttributionFragment extends Fragment implements MobileAttribu
     public void onDestroyView() {
         Log.i(">>>", "MobileAttributionFragment onDestroyView");
         super.onDestroyView();
+        if (null != view) {
+            ((ViewGroup) view.getParent()).removeView(view);
+        }
     }
 }

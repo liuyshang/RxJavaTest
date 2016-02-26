@@ -34,7 +34,7 @@ import rx.schedulers.Schedulers;
  */
 public class IPAddressFragment extends Fragment implements Callback<IPAddress> {
 
-    @ViewInject(id = R.id.et)
+    @ViewInject(id = R.id.et, click = "onClick")
     private EditText et;
     @ViewInject(id = R.id.bt_get, click = "onClick")
     private Button btn;
@@ -43,11 +43,15 @@ public class IPAddressFragment extends Fragment implements Callback<IPAddress> {
 
     private Context mContext;
     private Call<IPAddress> mCall;
+    private View view;
 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_get:
                 getInfo(et.getText().toString());
+                break;
+            case R.id.et:
+                et.setText("");
                 break;
             default:
                 break;
@@ -58,7 +62,9 @@ public class IPAddressFragment extends Fragment implements Callback<IPAddress> {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.i(">>>","IPAddressFragment onCreateView");
-        View view = inflater.inflate(R.layout.fragment_detail, container,false);
+        if (view == null) {
+            view = inflater.inflate(R.layout.fragment_detail, null);
+        }
         FinalActivity.initInjectedView(this, view);
         mContext = getActivity();
         et.setHint("请输入IP地址");
@@ -135,5 +141,8 @@ public class IPAddressFragment extends Fragment implements Callback<IPAddress> {
     public void onDestroyView() {
         Log.i(">>>","IPAddressFragment onDestroyView");
         super.onDestroyView();
+        if (null != view) {
+            ((ViewGroup) view.getParent()).removeView(view);
+        }
     }
 }

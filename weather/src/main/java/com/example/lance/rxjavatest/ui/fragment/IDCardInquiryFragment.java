@@ -35,7 +35,7 @@ public class IDCardInquiryFragment extends Fragment implements IDCardInquiryView
 
     private static final String TAG = "IDCardInquiryFragment";
 
-    @ViewInject(id = R.id.et)
+    @ViewInject(id = R.id.et, click = "onClick")
     private EditText et;
     @ViewInject(id = R.id.bt_get, click = "onClick")
     private Button btGet;
@@ -45,6 +45,7 @@ public class IDCardInquiryFragment extends Fragment implements IDCardInquiryView
     private Context mContext;
     private Dialog mDialog;
     private IDCardInquiryPresenterImpl impl;
+    private View view;
 
     public void onClick(View view) {
         switch (view.getId()) {
@@ -52,6 +53,9 @@ public class IDCardInquiryFragment extends Fragment implements IDCardInquiryView
                 if (!TextUtils.isEmpty(et.getText().toString())) {
                     impl.onIDCard(et.getText().toString());
                 }
+                break;
+            case R.id.et:
+                et.setText("");
                 break;
             default:
                 break;
@@ -62,7 +66,9 @@ public class IDCardInquiryFragment extends Fragment implements IDCardInquiryView
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.i(">>>","IDCardInquiryFragment onCreateView");
-        View view = inflater.inflate(R.layout.fragment_detail, container,false);
+        if (view == null) {
+            view = inflater.inflate(R.layout.fragment_detail, null);
+        }
         FinalActivity.initInjectedView(this, view);
         mContext = getActivity();
         mDialog = new ProgressDialog(mContext);
@@ -118,5 +124,8 @@ public class IDCardInquiryFragment extends Fragment implements IDCardInquiryView
     public void onDestroyView() {
         Log.i(">>>","IDCardInquiryFragment onDestroyView");
         super.onDestroyView();
+        if (null != view) {
+            ((ViewGroup) view.getParent()).removeView(view);
+        }
     }
 }
