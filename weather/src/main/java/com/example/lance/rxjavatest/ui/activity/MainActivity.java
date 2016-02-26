@@ -7,6 +7,10 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.lance.rxjavatest.R;
+import com.example.lance.rxjavatest.ui.fragment.IDCardInquiryFragment;
+import com.example.lance.rxjavatest.ui.fragment.IPAddressFragment;
+import com.example.lance.rxjavatest.ui.fragment.MobileAttributionFragment;
+import com.example.lance.rxjavatest.ui.fragment.WeatherFragment;
 
 import net.tsz.afinal.FinalActivity;
 import net.tsz.afinal.annotation.view.ViewInject;
@@ -32,26 +36,44 @@ public class MainActivity extends FinalActivity{
     public void onClick(View view){
         switch (view.getId()){
             case R.id.bt_weather:
-                startActivity(new Intent(mContext,WeatherActivity.class));
+                goToDetailActivity("0");
                 break;
             case R.id.bt_mobile_attribution:
-                startActivity(new Intent(mContext,MobileAttributionActivity.class));
+                goToDetailActivity("1");
                 break;
             case R.id.bt_id_card:
-                startActivity(new Intent(mContext,IDCardInquiryActivity.class));
+                goToDetailActivity("1");
                 break;
             case R.id.bt_ip_address:
-                startActivity(new Intent(mContext,IPAddressActivity.class));
+                goToDetailActivity("1");
                 break;
             default:
                 break;
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = MainActivity.this;
+    }
+
+    /**
+     * 跳转
+     * @param s
+     */
+    private void goToDetailActivity(String s) {
+        Intent intent = new Intent();
+        intent.setClass(mContext,DetialActivity.class);
+        intent.setPackage(getPackageName());
+        intent.putExtra("type",s);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

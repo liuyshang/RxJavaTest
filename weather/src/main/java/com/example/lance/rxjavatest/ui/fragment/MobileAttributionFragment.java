@@ -1,14 +1,20 @@
-package com.example.lance.rxjavatest.ui.activity;
+package com.example.lance.rxjavatest.ui.fragment;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lance.rxjavatest.R;
@@ -28,16 +34,16 @@ import java.util.List;
  * time: 2016/1/28 17:30
  * e-mail: lance.cao@anarry.com
  */
-public class MobileAttributionActivity extends FinalActivity implements MobileAttributionView{
+public class MobileAttributionFragment extends Fragment implements MobileAttributionView{
 
-    @ViewInject(id = R.id.ib_back, click = "onClick")
-    private ImageView ibBack;
     @ViewInject(id = R.id.et)
     private EditText et;
     @ViewInject(id = R.id.bt_get, click = "onClick")
     private Button btGet;
     @ViewInject(id = R.id.list_view)
     private ListView listView;
+    @ViewInject(id = R.id.tv_info)
+    private TextView tvInfo;
 
     private Context mContext;
     private Dialog mDialog;
@@ -45,9 +51,6 @@ public class MobileAttributionActivity extends FinalActivity implements MobileAt
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ib_back:
-                finish();
-                break;
             case R.id.bt_get:
                 et.clearFocus();
                 mobileImpl.onMobile(et.getText().toString().trim());
@@ -57,18 +60,26 @@ public class MobileAttributionActivity extends FinalActivity implements MobileAt
         }
     }
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mobile_attribution);
-        mContext = MobileAttributionActivity.this;
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.i(">>>", "MobileAttributionFragment onCreateView");
+//        View view = inflater.inflate(R.layout.fragment_mobile_attribution,container,false);
+        View view = inflater.inflate(R.layout.fragment_detail,null);
+        FinalActivity.initInjectedView(this,view);
+        mContext = getActivity();
         mDialog = new ProgressDialog(mContext);
         mobileImpl = new MobileAttributionPresenterImpl(this);
+        listView.setVisibility(View.VISIBLE);
+        tvInfo.setVisibility(View.GONE);
+        et.setHint("请输入手机号");
+        return view;
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onResume() {
+        Log.i(">>>", "MobileAttributionFragment onResume");
+        super.onResume();
     }
 
     @Override
@@ -83,7 +94,7 @@ public class MobileAttributionActivity extends FinalActivity implements MobileAt
 
     @Override
     public void showError(String str) {
-        Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -109,7 +120,17 @@ public class MobileAttributionActivity extends FinalActivity implements MobileAt
                 });
             }
         });
+    }
 
+    @Override
+    public void onPause() {
+        Log.i(">>>", "MobileAttributionFragment onPause");
+        super.onPause();
+    }
 
+    @Override
+    public void onDestroyView() {
+        Log.i(">>>", "MobileAttributionFragment onDestroyView");
+        super.onDestroyView();
     }
 }

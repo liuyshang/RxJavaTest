@@ -1,14 +1,20 @@
-package com.example.lance.rxjavatest.ui.activity;
+package com.example.lance.rxjavatest.ui.fragment;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,18 +26,13 @@ import com.example.lance.rxjavatest.ui.view.WeatherView;
 import net.tsz.afinal.FinalActivity;
 import net.tsz.afinal.annotation.view.ViewInject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * author: Lance
  * time: 2016/1/23 16:18
  * e-mail: lance.cao@anarry.com
  */
-public class WeatherActivity extends FinalActivity implements WeatherView{
+public class WeatherFragment extends Fragment implements WeatherView{
 
-    @ViewInject(id = R.id.ib_back, click = "onClick")
-    private ImageView ibBack;
     @ViewInject(id = R.id.et)
     private EditText et;
     @ViewInject(id = R.id.bt_get, click = "onClick")
@@ -43,16 +44,24 @@ public class WeatherActivity extends FinalActivity implements WeatherView{
     private Context mContext;
     private Dialog mDialog;
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.i(">>>", "WeatherFragment onCreateView");
+        View view = inflater.inflate(R.layout.fragment_detail,container,false);
+        FinalActivity.initInjectedView(this,view);
+        mContext = getActivity();
+        weatherPresenter = new WeatherPresenterImpl(this);
+        mDialog = new ProgressDialog(mContext);
+        et.setHint("请输入城市名称");
+        setListener();
+        return view;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weather);
-        mContext = WeatherActivity.this;
-        weatherPresenter = new WeatherPresenterImpl(this);
-        mDialog = new ProgressDialog(this);
-        mDialog.setTitle("加载天气中...");
-        setListener();
+    public void onResume() {
+        Log.i(">>>", "WeatherFragment onResume");
+        super.onResume();
     }
 
     private void setListener() {
@@ -69,9 +78,6 @@ public class WeatherActivity extends FinalActivity implements WeatherView{
             case R.id.bt_get:
                 et.clearFocus();
                 weatherPresenter.getWeatherInfo(et.getText().toString().trim());
-                break;
-            case R.id.ib_back:
-                finish();
                 break;
             default:
                 break;
@@ -97,7 +103,7 @@ public class WeatherActivity extends FinalActivity implements WeatherView{
     @Override
     public void showWeatherInfo(WeatherInfo info) {
         //隐藏键盘
-        InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         manager.hideSoftInputFromWindow(et.getWindowToken(),0);
 
         StringBuilder builder = new StringBuilder();
@@ -122,7 +128,14 @@ public class WeatherActivity extends FinalActivity implements WeatherView{
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        Log.i(">>>", "WeatherFragment onPause");
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroyView() {
+        Log.i(">>>", "WeatherFragment onDestroyView");
+        super.onDestroyView();
     }
 }

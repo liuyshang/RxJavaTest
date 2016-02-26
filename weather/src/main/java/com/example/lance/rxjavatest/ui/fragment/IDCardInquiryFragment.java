@@ -1,11 +1,16 @@
-package com.example.lance.rxjavatest.ui.activity;
+package com.example.lance.rxjavatest.ui.fragment;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,12 +31,10 @@ import net.tsz.afinal.annotation.view.ViewInject;
  * time: 2016/2/23 14:19
  * e-mail: lance.cao@anarry.com
  */
-public class IDCardInquiryActivity extends FinalActivity implements IDCardInquiryView {
+public class IDCardInquiryFragment extends Fragment implements IDCardInquiryView {
 
-    private static final String TAG = "IDCardInquiryActivity";
+    private static final String TAG = "IDCardInquiryFragment";
 
-    @ViewInject(id = R.id.ib_back, click = "onClick")
-    private ImageView ibBack;
     @ViewInject(id = R.id.et)
     private EditText et;
     @ViewInject(id = R.id.bt_get, click = "onClick")
@@ -45,9 +48,6 @@ public class IDCardInquiryActivity extends FinalActivity implements IDCardInquir
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ib_back:
-                finish();
-                break;
             case R.id.bt_get:
                 if (!TextUtils.isEmpty(et.getText().toString())) {
                     impl.onIDCard(et.getText().toString());
@@ -58,13 +58,23 @@ public class IDCardInquiryActivity extends FinalActivity implements IDCardInquir
         }
     }
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_id_card_inquiry);
-        mContext = IDCardInquiryActivity.this;
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.i(">>>","IDCardInquiryFragment onCreateView");
+        View view = inflater.inflate(R.layout.fragment_detail, container,false);
+        FinalActivity.initInjectedView(this, view);
+        mContext = getActivity();
         mDialog = new ProgressDialog(mContext);
         impl = new IDCardInquiryPresenterImpl(this);
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        Log.i(">>>","IDCardInquiryFragment onResume");
+        et.setHint("请输入身份证号码");
+        super.onResume();
     }
 
     @Override
@@ -85,7 +95,7 @@ public class IDCardInquiryActivity extends FinalActivity implements IDCardInquir
     @Override
     public void showIDCardInfo(IDCardInfo entity) {
         //隐藏键盘
-        InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         manager.hideSoftInputFromWindow(et.getWindowToken(), 0);
 
         IDCardInfo.RetDataEntity retData = entity.getRetData();
@@ -99,7 +109,14 @@ public class IDCardInquiryActivity extends FinalActivity implements IDCardInquir
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        Log.i(">>>","IDCardInquiryFragment onPause");
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroyView() {
+        Log.i(">>>","IDCardInquiryFragment onDestroyView");
+        super.onDestroyView();
     }
 }

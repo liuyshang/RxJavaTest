@@ -1,5 +1,8 @@
 package com.example.lance.rxjavatest.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * author: Lance
  * time: 2016/1/29 15:42
@@ -30,4 +33,5 @@ public class Common {
      * ip地址查询
      * */
     public static String IP_ADDRESS = "http://apis.baidu.com/apistore/iplookupservice/iplookup";
+
 }

@@ -1,45 +1,29 @@
-package com.example.lance.rxjavatest.ui.activity;
+package com.example.lance.rxjavatest.ui.fragment;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.TextUtils;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lance.rxjavatest.R;
-import com.example.lance.rxjavatest.model.bean.IDCardInfo;
 import com.example.lance.rxjavatest.model.bean.IPAddress;
 import com.example.lance.rxjavatest.model.impl.IPAddressModelImpl;
-import com.example.lance.rxjavatest.util.Common;
-import com.google.gson.Gson;
 
 import net.tsz.afinal.FinalActivity;
-import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.annotation.view.ViewInject;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
-import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
-import retrofit2.http.Headers;
-import retrofit2.http.Query;
-import rx.Observable;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
@@ -48,25 +32,20 @@ import rx.schedulers.Schedulers;
  * time: 2016/2/24 11:12
  * e-mail: lance.cao@anarry.com
  */
-public class IPAddressActivity extends FinalActivity implements Callback<IPAddress> {
+public class IPAddressFragment extends Fragment implements Callback<IPAddress> {
 
     @ViewInject(id = R.id.et)
     private EditText et;
-    @ViewInject(id = R.id.ib_back, click = "onClick")
-    private ImageView ibBack;
     @ViewInject(id = R.id.bt_get, click = "onClick")
     private Button btn;
     @ViewInject(id = R.id.tv_info)
-    private TextView tv;
+    private TextView tvInfo;
 
     private Context mContext;
     private Call<IPAddress> mCall;
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ib_back:
-                finish();
-                break;
             case R.id.bt_get:
                 getInfo(et.getText().toString());
                 break;
@@ -75,11 +54,21 @@ public class IPAddressActivity extends FinalActivity implements Callback<IPAddre
         }
     }
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ip_address);
-        mContext = IPAddressActivity.this;
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.i(">>>","IPAddressFragment onCreateView");
+        View view = inflater.inflate(R.layout.fragment_detail, container,false);
+        FinalActivity.initInjectedView(this, view);
+        mContext = getActivity();
+        et.setHint("请输入IP地址");
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        Log.i(">>>","IPAddressFragment onResume");
+        super.onResume();
     }
 
     @Override
@@ -115,7 +104,7 @@ public class IPAddressActivity extends FinalActivity implements Callback<IPAddre
 
 //        mCall = IPAddressModelImpl.getDataCall(s);
 //        mCall.enqueue(this);
-
+//
 //        IPAddressModelImpl.getDataCall(s).enqueue(this);
     }
 
@@ -123,7 +112,7 @@ public class IPAddressActivity extends FinalActivity implements Callback<IPAddre
      * 显示ip地址信息
      */
     private void showInfo(IPAddress ipAddress) {
-        InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         manager.hideSoftInputFromWindow(et.getWindowToken(), 0);
         IPAddress.RetDataEntity retData = ipAddress.getRetData();
         StringBuilder builder = new StringBuilder();
@@ -133,11 +122,18 @@ public class IPAddressActivity extends FinalActivity implements Callback<IPAddre
         builder.append("城市: " + retData.getCity() + "\n");
         builder.append("区: " + retData.getDistrict() + "\n");
         builder.append("运营商: " + retData.getCarrier() + "\n");
-        tv.setText(builder.toString());
+        tvInfo.setText(builder.toString());
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        Log.i(">>>","IPAddressFragment onPause");
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroyView() {
+        Log.i(">>>","IPAddressFragment onDestroyView");
+        super.onDestroyView();
     }
 }
