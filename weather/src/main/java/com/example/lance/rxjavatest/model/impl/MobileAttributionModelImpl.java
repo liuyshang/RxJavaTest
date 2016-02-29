@@ -59,7 +59,7 @@ public class MobileAttributionModelImpl implements LoadDataModel {
                             JSONObject ob = dataArray.optJSONObject(i);
                             mobileInfo = new MobileInfo();
                             mobileInfo.setAreaCode(ob.optString("areacode"));
-                            mobileInfo.setCity(ob.optString("city"));
+                            mobileInfo.setCity(ob.optString("City"));
                             mobileInfo.setOperator(ob.optString("operator"));
                             mobileInfo.setPhone(ob.optString("phone"));
                             mobileInfo.setPostCode(ob.optString("postcode"));
@@ -71,7 +71,7 @@ public class MobileAttributionModelImpl implements LoadDataModel {
                         JSONObject dataObject = object.optJSONObject("data");
                         mobileInfo = new MobileInfo();
                         mobileInfo.setAreaCode(dataObject.optString("areacode"));
-                        mobileInfo.setCity(dataObject.optString("city"));
+                        mobileInfo.setCity(dataObject.optString("City"));
                         mobileInfo.setOperator(dataObject.optString("operator"));
                         mobileInfo.setPhone(dataObject.optString("phone"));
                         mobileInfo.setPostCode(dataObject.optString("postcode"));

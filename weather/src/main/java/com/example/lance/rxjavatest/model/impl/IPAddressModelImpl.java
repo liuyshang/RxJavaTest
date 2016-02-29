@@ -1,6 +1,6 @@
 package com.example.lance.rxjavatest.model.impl;
 
-import com.example.lance.rxjavatest.model.bean.IPAddress;
+import com.example.lance.rxjavatest.model.bean.IPAddressInfo;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -25,11 +25,11 @@ public class IPAddressModelImpl {
 
         @Headers("apikey: 5befe01a38543280ce270befd5c6f952")
         @GET("apistore/iplookupservice/iplookup/")
-        Call<IPAddress> getIPCall(@Query("ip") String s);
+        Call<IPAddressInfo> getIPCall(@Query("ip") String s);
 
         @Headers("apikey: 5befe01a38543280ce270befd5c6f952")
         @GET("apistore/iplookupservice/iplookup/")
-        Observable<IPAddress> getIPObservable(@Query("ip") String s);
+        Observable<IPAddressInfo> getIPObservable(@Query("ip") String s);
     }
 
     private static Retrofit retrofit = new Retrofit.Builder()
@@ -43,7 +43,7 @@ public class IPAddressModelImpl {
     /**
      * 获取ip数据，返回Call类型
      */
-    public static Call<IPAddress> getDataCall(String ip){
+    public static Call<IPAddressInfo> getDataCall(String ip){
         return apiManger.getIPCall(ip);
     }
 
@@ -52,7 +52,7 @@ public class IPAddressModelImpl {
      * @param ip 参数
      * @return  Observable
      */
-    public static Observable<IPAddress> getDataObdervable(final String ip){
+    public static Observable<IPAddressInfo> getDataObdervable(final String ip){
         return apiManger.getIPObservable(ip);
     }
 }

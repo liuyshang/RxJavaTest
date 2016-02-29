@@ -50,7 +50,7 @@ public class WeatherModelImpl implements LoadDataModel {
                     }
                     JSONObject dataObject = object.optJSONObject("retData");
                     WeatherInfo weatherInfo = new WeatherInfo();
-                    weatherInfo.setCity(dataObject.optString("city"));
+                    weatherInfo.setCity(dataObject.optString("City"));
                     weatherInfo.setPinyin(dataObject.optString("pinyin"));
                     weatherInfo.setCitycode(dataObject.optString("citycode"));
                     weatherInfo.setDate(dataObject.optString("date"));

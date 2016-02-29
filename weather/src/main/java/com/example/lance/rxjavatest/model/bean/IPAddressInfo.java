@@ -5,11 +5,11 @@ package com.example.lance.rxjavatest.model.bean;
  * time: 2016/2/23 18:49
  * e-mail: lance.cao@anarry.com
  */
-public class IPAddress {
+public class IPAddressInfo {
     /**
      * errNum : 0
      * errMsg : success
-     * retData : {"ip":"117.89.35.58","country":"中国","province":"江苏","city":"南京","district":"鼓楼","carrier":"中国电信"}
+     * retData : {"ip":"117.89.35.58","country":"中国","province":"江苏","City":"南京","district":"鼓楼","carrier":"中国电信"}
      */
 
     private int errNum;
@@ -18,7 +18,7 @@ public class IPAddress {
      * ip : 117.89.35.58
      * country : 中国
      * province : 江苏
-     * city : 南京
+     * City : 南京
      * district : 鼓楼
      * carrier : 中国电信
      */

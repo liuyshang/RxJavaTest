@@ -30,6 +30,8 @@ public class MainActivity extends FinalActivity{
     private Button btIDCard;
     @ViewInject(id = R.id.bt_ip_address, click = "onClick")
     private Button btIPAdress;
+    @ViewInject(id = R.id.bt_air_quality, click = "onClick")
+    private Button btAirQuality;
 
     private Context mContext;
 
@@ -42,10 +44,13 @@ public class MainActivity extends FinalActivity{
                 goToDetailActivity("1");
                 break;
             case R.id.bt_id_card:
-                goToDetailActivity("1");
+                goToDetailActivity("2");
                 break;
             case R.id.bt_ip_address:
-                goToDetailActivity("1");
+                goToDetailActivity("3");
+                break;
+            case R.id.bt_air_quality:
+                goToDetailActivity("4");
                 break;
             default:
                 break;

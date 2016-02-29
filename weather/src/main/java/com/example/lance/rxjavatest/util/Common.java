@@ -15,6 +15,11 @@ public class Common {
     public static String APPKEY = "5befe01a38543280ce270befd5c6f952";
 
     /**
+     * 百度API
+     * */
+    public static String BAI_DU_API = "http://apis.baidu.com/";
+
+    /**
      * 手机号归属地url
      * */
     public static String MOBILE_ATTRIBUTION = "http://apis.baidu.com/chazhao/mobilesearch/phonesearch";
@@ -34,4 +39,13 @@ public class Common {
      * */
     public static String IP_ADDRESS = "http://apis.baidu.com/apistore/iplookupservice/iplookup";
 
+    /**
+     * 所支持的城市列表
+     * */
+    public static String CITY_LIST = "http://apis.baidu.com/apistore/aqiservice/citylist";
+
+    /**
+     * 空气质量指数
+     * */
+    public static String AIR_QUALITY = "http://apis.baidu.com/apistore/aqiservice/aqi";
 }

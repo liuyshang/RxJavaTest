@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.lance.rxjavatest.R;
 import com.example.lance.rxjavatest.adapter.TabViewPagerAdapter;
 import com.example.lance.rxjavatest.customview.SlidingTabLayout;
+import com.example.lance.rxjavatest.ui.fragment.AirQualityIndexFragment;
 import com.example.lance.rxjavatest.ui.fragment.IDCardInquiryFragment;
 import com.example.lance.rxjavatest.ui.fragment.IPAddressFragment;
 import com.example.lance.rxjavatest.ui.fragment.MobileAttributionFragment;
@@ -96,11 +97,13 @@ public class DetialActivity extends FragmentActivity implements View.OnClickList
         mListTitle.add("手机号归属地");
         mListTitle.add("身份证");
         mListTitle.add("ip地址");
+        mListTitle.add("空气质量指数");
 
         mListFragment.add(new WeatherFragment());
         mListFragment.add(new MobileAttributionFragment());
         mListFragment.add(new IDCardInquiryFragment());
         mListFragment.add(new IPAddressFragment());
+        mListFragment.add(new AirQualityIndexFragment());
 
         mAdapter = new TabViewPagerAdapter(getSupportFragmentManager(), mContext, mListTitle, mListFragment);
         viewPager.setAdapter(mAdapter);

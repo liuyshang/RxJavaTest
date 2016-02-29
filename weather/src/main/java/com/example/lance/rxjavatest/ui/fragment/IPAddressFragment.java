@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lance.rxjavatest.R;
-import com.example.lance.rxjavatest.model.bean.IPAddress;
+import com.example.lance.rxjavatest.model.bean.IPAddressInfo;
 import com.example.lance.rxjavatest.model.impl.IPAddressModelImpl;
 
 import net.tsz.afinal.FinalActivity;
@@ -32,7 +32,7 @@ import rx.schedulers.Schedulers;
  * time: 2016/2/24 11:12
  * e-mail: lance.cao@anarry.com
  */
-public class IPAddressFragment extends Fragment implements Callback<IPAddress> {
+public class IPAddressFragment extends Fragment implements Callback<IPAddressInfo> {
 
     @ViewInject(id = R.id.et, click = "onClick")
     private EditText et;
@@ -42,7 +42,7 @@ public class IPAddressFragment extends Fragment implements Callback<IPAddress> {
     private TextView tvInfo;
 
     private Context mContext;
-    private Call<IPAddress> mCall;
+    private Call<IPAddressInfo> mCall;
     private View view;
 
     public void onClick(View view) {
@@ -78,7 +78,7 @@ public class IPAddressFragment extends Fragment implements Callback<IPAddress> {
     }
 
     @Override
-    public void onResponse(Call<IPAddress> call, Response<IPAddress> response) {
+    public void onResponse(Call<IPAddressInfo> call, Response<IPAddressInfo> response) {
         String str = response.body().getRetData().getCountry() + response.body().getRetData().getProvince()
                 + response.body().getRetData().getCity() + response.body().getRetData().getDistrict()
                 + response.body().getRetData().getCarrier();
@@ -86,7 +86,7 @@ public class IPAddressFragment extends Fragment implements Callback<IPAddress> {
     }
 
     @Override
-    public void onFailure(Call<IPAddress> call, Throwable t) {
+    public void onFailure(Call<IPAddressInfo> call, Throwable t) {
         Toast.makeText(mContext, t.toString(), Toast.LENGTH_SHORT).show();
     }
 
@@ -96,15 +96,15 @@ public class IPAddressFragment extends Fragment implements Callback<IPAddress> {
     private void getInfo(final String s) {
         IPAddressModelImpl.getDataObdervable(s)
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<IPAddress>() {
+                .subscribe(new Action1<IPAddressInfo>() {
                     @Override
-                    public void call(IPAddress ipAddress) {
-                        showInfo(ipAddress);
+                    public void call(IPAddressInfo ipAddressInfo) {
+                        showInfo(ipAddressInfo);
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        Log.e("LOG_TAG", throwable.toString());
+                        Log.e(">>>", throwable.toString());
                     }
                 });
 
@@ -117,10 +117,10 @@ public class IPAddressFragment extends Fragment implements Callback<IPAddress> {
     /**
      * 显示ip地址信息
      */
-    private void showInfo(IPAddress ipAddress) {
+    private void showInfo(IPAddressInfo ipAddressInfo) {
         InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         manager.hideSoftInputFromWindow(et.getWindowToken(), 0);
-        IPAddress.RetDataEntity retData = ipAddress.getRetData();
+        IPAddressInfo.RetDataEntity retData = ipAddressInfo.getRetData();
         StringBuilder builder = new StringBuilder();
         builder.append("ip: " + retData.getIp() + "\n");
         builder.append("国家: " + retData.getCountry() + "\n");

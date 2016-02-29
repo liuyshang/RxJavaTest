@@ -30,11 +30,16 @@
                 android:id="@+id/bt_id_card"
                 style="@style/ButtonMain"
                 android:text="身份证查询" />
+
             <Button
                 android:id="@+id/bt_ip_address"
                 style="@style/ButtonMain"
                 android:text="ip地址查询" />
 
+            <Button
+                android:id="@+id/bt_air_quality"
+                style="@style/ButtonMain"
+                android:text="空气质量指数" />
 
         </LinearLayout>
 
