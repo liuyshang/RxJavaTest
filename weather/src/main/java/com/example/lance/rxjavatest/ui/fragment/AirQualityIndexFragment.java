@@ -1,6 +1,11 @@
 package com.example.lance.rxjavatest.ui.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteCursorDriver;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQuery;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,6 +29,8 @@ import com.example.lance.rxjavatest.model.impl.AirQualityModelImpl;
 import net.tsz.afinal.FinalActivity;
 import net.tsz.afinal.annotation.view.ViewInject;
 
+import java.io.File;
+
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -44,6 +51,7 @@ public class AirQualityIndexFragment extends Fragment {
 
     private View view;
     private Context mContext;
+    private SharedPreferences preferences;
 
     public void onClick(View view) {
         switch (view.getId()) {
@@ -67,8 +75,62 @@ public class AirQualityIndexFragment extends Fragment {
         }
         FinalActivity.initInjectedView(this, view);
         mContext = getActivity();
-        getCityList();
+        preferences = mContext.getSharedPreferences("city",Context.MODE_PRIVATE);
+        ifDownLoadDat();
         return view;
+    }
+
+    /**
+     * 判断是否已下载数据
+     */
+    private void ifDownLoadDat() {
+        int count = preferences.getInt("exist",1);
+        Log.i(">>>","count: " + count);
+        if (count == 1){
+            getCityList();
+            preferences.edit().putInt("exist",0).apply();
+        }
+    }
+
+    /**
+     * 在使用ActiveAndroid，这种判断数据库中的表格是否存在不适用
+     * 数据库，和表格在应用打开后就建立
+     * */
+    /**
+     * 判断db是否存在
+     */
+    private void ifDBExist() {
+        File file = mContext.getDatabasePath("city.db");
+        Log.i(">>>", "path: " + file.getAbsolutePath());
+        if (file.exists()) {
+            ifTableExist(file);
+            Log.i(">>>","file exist");
+        } else {
+            getCityList();
+            Log.i(">>>", "file no exist");
+        }
+    }
+
+    /**
+     * 判断table是否存在
+     * @param file
+     */
+    private void ifTableExist(File file) {
+        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(file,null);
+        Cursor cursor = db.rawQuery("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='City'", null);
+        if (cursor.moveToNext()){
+            int count = cursor.getInt(0);
+            if (count == 0){
+                getCityList();
+                Log.i(">>>", "table no exist");
+            }else{
+                getCityList();
+                Log.i(">>>","table exist");
+            }
+            return;
+        }
+        cursor.close();
+        db.close();
     }
 
     @Override
@@ -122,7 +184,7 @@ public class AirQualityIndexFragment extends Fragment {
      * @param s
      */
     private void queryCity(String s) {
-        City city = new Select().from(City.class).where("Name = ?",s).orderBy("RANDOM()").executeSingle();
+        City city = new Select().from(City.class).where("Name = ?", s).orderBy("RANDOM()").executeSingle();
         if (city == null) {
             Toast.makeText(mContext, "城市不在查询列表中", Toast.LENGTH_SHORT).show();
         } else {
