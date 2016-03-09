@@ -3,8 +3,6 @@ package com.example.lance.rxjavatest.ui.fragment;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,11 +21,12 @@ import com.example.lance.rxjavatest.adapter.CommomAdapter;
 import com.example.lance.rxjavatest.adapter.ViewHolder;
 import com.example.lance.rxjavatest.model.bean.MobileInfo;
 import com.example.lance.rxjavatest.presenter.impl.MobileAttributionPresenterImpl;
-import com.example.lance.rxjavatest.ui.view.MobileAttributionView;
+import com.example.lance.rxjavatest.ui.view.FragmentView;
 
 import net.tsz.afinal.FinalActivity;
 import net.tsz.afinal.annotation.view.ViewInject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,7 +34,7 @@ import java.util.List;
  * time: 2016/1/28 17:30
  * e-mail: lance.cao@anarry.com
  */
-public class MobileAttributionFragment extends Fragment implements MobileAttributionView {
+public class MobileAttributionFragment extends Fragment implements FragmentView {
 
     @ViewInject(id = R.id.et, click = "onClick")
     private EditText et;
@@ -81,7 +79,6 @@ public class MobileAttributionFragment extends Fragment implements MobileAttribu
         listView.setVisibility(View.VISIBLE);
         tvInfo.setVisibility(View.GONE);
         et.setHint("请输入手机号");
-
         return view;
     }
 
@@ -92,12 +89,12 @@ public class MobileAttributionFragment extends Fragment implements MobileAttribu
     }
 
     @Override
-    public void showDialog() {
+    public void showLoading() {
         mDialog.show();
     }
 
     @Override
-    public void hideDialog() {
+    public void hideLoading() {
         mDialog.dismiss();
     }
 
@@ -107,8 +104,9 @@ public class MobileAttributionFragment extends Fragment implements MobileAttribu
     }
 
     @Override
-    public void showMobileInfo(List<MobileInfo> list) {
-
+    public <T> void showInfo(T info) {
+        List<MobileInfo> list = new ArrayList<>();
+        list = (List<MobileInfo>) info;
         listView.setAdapter(new CommomAdapter<MobileInfo>(mContext, list, R.layout.item_mobile_attribution) {
             @Override
             protected void convert(ViewHolder holder, MobileInfo mobileInfo) {

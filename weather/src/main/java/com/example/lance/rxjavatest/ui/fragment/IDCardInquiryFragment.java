@@ -14,14 +14,13 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lance.rxjavatest.R;
 import com.example.lance.rxjavatest.model.bean.IDCardInfo;
 import com.example.lance.rxjavatest.presenter.impl.IDCardInquiryPresenterImpl;
-import com.example.lance.rxjavatest.ui.view.IDCardInquiryView;
+import com.example.lance.rxjavatest.ui.view.FragmentView;
 
 import net.tsz.afinal.FinalActivity;
 import net.tsz.afinal.annotation.view.ViewInject;
@@ -31,7 +30,7 @@ import net.tsz.afinal.annotation.view.ViewInject;
  * time: 2016/2/23 14:19
  * e-mail: lance.cao@anarry.com
  */
-public class IDCardInquiryFragment extends Fragment implements IDCardInquiryView {
+public class IDCardInquiryFragment extends Fragment implements FragmentView {
 
     private static final String TAG = "IDCardInquiryFragment";
 
@@ -73,23 +72,23 @@ public class IDCardInquiryFragment extends Fragment implements IDCardInquiryView
         mContext = getActivity();
         mDialog = new ProgressDialog(mContext);
         impl = new IDCardInquiryPresenterImpl(this);
+        et.setHint("请输入身份证号码");
         return view;
     }
 
     @Override
     public void onResume() {
-        Log.i(">>>","IDCardInquiryFragment onResume");
-        et.setHint("请输入身份证号码");
+        Log.i(">>>", "IDCardInquiryFragment onResume");
         super.onResume();
     }
 
     @Override
-    public void showDialog() {
+    public void showLoading() {
         mDialog.show();
     }
 
     @Override
-    public void hideDialog() {
+    public void hideLoading() {
         mDialog.dismiss();
     }
 
@@ -99,11 +98,12 @@ public class IDCardInquiryFragment extends Fragment implements IDCardInquiryView
     }
 
     @Override
-    public void showIDCardInfo(IDCardInfo entity) {
+    public <T> void showInfo(T infomation) {
         //隐藏键盘
         InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         manager.hideSoftInputFromWindow(et.getWindowToken(), 0);
 
+        IDCardInfo entity = (IDCardInfo)infomation;
         IDCardInfo.RetDataEntity retData = entity.getRetData();
 
         StringBuilder builder = new StringBuilder();

@@ -4,7 +4,7 @@ import com.example.lance.rxjavatest.model.bean.WeatherInfo;
 import com.example.lance.rxjavatest.model.LoadDataModel;
 import com.example.lance.rxjavatest.model.impl.WeatherModelImpl;
 import com.example.lance.rxjavatest.presenter.OnCompleteListener;
-import com.example.lance.rxjavatest.ui.view.WeatherView;
+import com.example.lance.rxjavatest.ui.view.FragmentView;
 
 import java.util.List;
 
@@ -17,24 +17,24 @@ import java.util.List;
 public class WeatherPresenterImpl implements OnCompleteListener {
 
     //Presenter作为中间层，持有View和Model的引用
-    private WeatherView weatherView;
+    private FragmentView fragmentView;
     private LoadDataModel weatherModel;
 
-    public WeatherPresenterImpl(WeatherView weatherView) {
-        this.weatherView = weatherView;
+    public WeatherPresenterImpl(FragmentView fragmentView) {
+        this.fragmentView = fragmentView;
         weatherModel = new WeatherModelImpl();
     }
 
     //ui调用
     public void getWeatherInfo(String str) {
-        weatherView.showLoading();
+        fragmentView.showLoading();
         weatherModel.loadWeather(str, this);
     }
 
     @Override
     public <T> void onSuccess(T t) {
-        weatherView.hideLoading();
-        weatherView.showWeatherInfo((WeatherInfo)t);
+        fragmentView.hideLoading();
+        fragmentView.showInfo(t);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class WeatherPresenterImpl implements OnCompleteListener {
     //model调用
     @Override
     public void onError(String str) {
-        weatherView.hideLoading();
-        weatherView.showError(str);
+        fragmentView.hideLoading();
+        fragmentView.showError(str);
     }
 }

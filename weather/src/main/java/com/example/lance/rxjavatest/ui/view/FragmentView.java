@@ -1,25 +1,23 @@
 package com.example.lance.rxjavatest.ui.view;
 
-import com.example.lance.rxjavatest.model.bean.MobileInfo;
-
-import java.util.List;
+import com.example.lance.rxjavatest.model.bean.WeatherInfo;
 
 /**
  * author: Lance
- * time: 2016/1/29 14:42
+ * time: 2016/1/23 16:18
  * e-mail: lance.cao@anarry.com
  */
-public interface MobileAttributionView {
+public interface FragmentView {
 
     /**
      * 显示dialog
      * */
-   void showDialog();
+    void showLoading();
 
     /**
      * 隐藏dialog
      * */
-    void hideDialog();
+    void hideLoading();
 
     /**
      * 显示错误信息
@@ -27,7 +25,7 @@ public interface MobileAttributionView {
     void showError(String str);
 
     /**
-     * 显示手机号信息
+     * 显示天气信息
      * */
-    void showMobileInfo(List<MobileInfo> list);
+    <T> void showInfo(T info);
 }

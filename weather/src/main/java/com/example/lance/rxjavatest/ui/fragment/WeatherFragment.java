@@ -13,15 +13,13 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lance.rxjavatest.R;
 import com.example.lance.rxjavatest.model.bean.WeatherInfo;
 import com.example.lance.rxjavatest.presenter.impl.WeatherPresenterImpl;
-import com.example.lance.rxjavatest.ui.view.WeatherView;
+import com.example.lance.rxjavatest.ui.view.FragmentView;
 
 import net.tsz.afinal.FinalActivity;
 import net.tsz.afinal.annotation.view.ViewInject;
@@ -31,9 +29,9 @@ import net.tsz.afinal.annotation.view.ViewInject;
  * time: 2016/1/23 16:18
  * e-mail: lance.cao@anarry.com
  */
-public class WeatherFragment extends Fragment implements WeatherView{
+public class WeatherFragment extends Fragment implements FragmentView {
 
-    @ViewInject(id = R.id.et)
+    @ViewInject(id = R.id.et, click = "onClick")
     private EditText et;
     @ViewInject(id = R.id.bt_get, click = "onClick")
     private Button btGet;
@@ -57,7 +55,6 @@ public class WeatherFragment extends Fragment implements WeatherView{
         weatherPresenter = new WeatherPresenterImpl(this);
         mDialog = new ProgressDialog(mContext);
         et.setHint("请输入城市名称");
-        setListener();
         return view;
     }
 
@@ -67,20 +64,14 @@ public class WeatherFragment extends Fragment implements WeatherView{
         super.onResume();
     }
 
-    private void setListener() {
-        et.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                et.setText("");
-            }
-        });
-    }
-
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.bt_get:
                 et.clearFocus();
                 weatherPresenter.getWeatherInfo(et.getText().toString().trim());
+                break;
+            case R.id.et:
+                et.setText("");
                 break;
             default:
                 break;
@@ -104,11 +95,12 @@ public class WeatherFragment extends Fragment implements WeatherView{
 
 
     @Override
-    public void showWeatherInfo(WeatherInfo info) {
+    public <T> void showInfo(T infomation) {
         //隐藏键盘
         InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         manager.hideSoftInputFromWindow(et.getWindowToken(),0);
 
+        WeatherInfo info = (WeatherInfo)infomation;
         StringBuilder builder = new StringBuilder();
         builder.append("城市: \t\t\t\t" + info.getCity() + "\n");
         builder.append("城市拼音: " + info.getPinyin() + "\n");

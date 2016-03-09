@@ -4,7 +4,7 @@ import com.example.lance.rxjavatest.model.LoadDataModel;
 import com.example.lance.rxjavatest.model.bean.MobileInfo;
 import com.example.lance.rxjavatest.model.impl.MobileAttributionModelImpl;
 import com.example.lance.rxjavatest.presenter.OnCompleteListener;
-import com.example.lance.rxjavatest.ui.view.MobileAttributionView;
+import com.example.lance.rxjavatest.ui.view.FragmentView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +16,10 @@ import java.util.List;
  */
 public class MobileAttributionPresenterImpl implements OnCompleteListener {
 
-    private MobileAttributionView mobileView;
+    private FragmentView mobileView;
     private LoadDataModel mobileModel;
 
-    public MobileAttributionPresenterImpl(MobileAttributionView mobileView) {
+    public MobileAttributionPresenterImpl(FragmentView mobileView) {
         this.mobileView = mobileView;
         mobileModel = new MobileAttributionModelImpl();
     }
@@ -31,14 +31,14 @@ public class MobileAttributionPresenterImpl implements OnCompleteListener {
     public <T> void onSuccess(T t) {
         List<MobileInfo> list = new ArrayList<>();
         list.add((MobileInfo) t);
-        mobileView.hideDialog();
-        mobileView.showMobileInfo(list);
+        mobileView.hideLoading();
+        mobileView.showInfo(list);
     }
 
     @Override
     public <T> void onSuccess(List<T> list) {
-        mobileView.hideDialog();
-        mobileView.showMobileInfo((List<MobileInfo>) list);
+        mobileView.hideLoading();
+        mobileView.showInfo(list);
     }
 
     /**
@@ -46,7 +46,7 @@ public class MobileAttributionPresenterImpl implements OnCompleteListener {
      */
     @Override
     public void onError(String str) {
-        mobileView.hideDialog();
+        mobileView.hideLoading();
         mobileView.showError(str);
     }
 
@@ -54,7 +54,7 @@ public class MobileAttributionPresenterImpl implements OnCompleteListener {
      * 获取手机信息， ui 调用
      */
     public void onMobile(String str) {
-        mobileView.showDialog();
+        mobileView.showLoading();
         mobileModel.loadWeather(str, this);
     }
 }

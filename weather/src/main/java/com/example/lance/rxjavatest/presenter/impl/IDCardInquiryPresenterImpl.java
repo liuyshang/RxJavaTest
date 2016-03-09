@@ -1,12 +1,10 @@
 package com.example.lance.rxjavatest.presenter.impl;
 
-import android.util.Log;
-
 import com.example.lance.rxjavatest.model.LoadDataModel;
 import com.example.lance.rxjavatest.model.bean.IDCardInfo;
 import com.example.lance.rxjavatest.model.impl.IDCardInquiryModelImpl;
 import com.example.lance.rxjavatest.presenter.OnCompleteListener;
-import com.example.lance.rxjavatest.ui.view.IDCardInquiryView;
+import com.example.lance.rxjavatest.ui.view.FragmentView;
 
 import java.util.List;
 
@@ -17,18 +15,18 @@ import java.util.List;
  */
 public class IDCardInquiryPresenterImpl implements OnCompleteListener {
 
-    private IDCardInquiryView idView;
+    private FragmentView idView;
     private LoadDataModel idModel;
 
-    public IDCardInquiryPresenterImpl(IDCardInquiryView idView) {
+    public IDCardInquiryPresenterImpl(FragmentView idView) {
         this.idView = idView;
         idModel = new IDCardInquiryModelImpl();
     }
 
     @Override
     public <T> void onSuccess(T t) {
-        idView.hideDialog();
-        idView.showIDCardInfo((IDCardInfo) t);
+        idView.hideLoading();
+        idView.showInfo(t);
     }
 
     @Override
@@ -38,7 +36,7 @@ public class IDCardInquiryPresenterImpl implements OnCompleteListener {
 
     @Override
     public void onError(String str) {
-        idView.hideDialog();
+        idView.hideLoading();
         idView.showError(str);
     }
 
@@ -47,7 +45,7 @@ public class IDCardInquiryPresenterImpl implements OnCompleteListener {
      * @param str 身份证id
      */
     public void onIDCard(String str){
-        idView.showDialog();
+        idView.showLoading();
         idModel.loadWeather(str,this);
     }
 }
